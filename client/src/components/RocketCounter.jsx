@@ -18,7 +18,7 @@ export default function RocketCounter() {
 
   return (
     <div className="panel">
-      <img className="panel-logo" src="/images/rocket.png" alt="Rocket" />
+      <img className="panel-logo" src="/images/rocket.jpg" alt="Rocket" />
       <span className="counter-label">Rocket Boosts</span>
       <div className="counter-controls">
         <button

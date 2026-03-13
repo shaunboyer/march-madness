@@ -18,7 +18,7 @@ export default function WhiskeyCounter() {
 
   return (
     <div className="panel">
-      <img className="panel-logo" src="/images/whiskey.png" alt="Whiskey" />
+      <img className="panel-logo" src="/images/whiskey.jpg" alt="Whiskey" />
       <span className="counter-label">Whiskey Line</span>
       <div className="counter-controls">
         <button
