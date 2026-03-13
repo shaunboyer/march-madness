@@ -29,13 +29,13 @@ body {
 
 /* ── Page ───────────────────────────────────────────────────────── */
 .page {
-  padding: var(--gap);
+  padding: 48px var(--gap);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--gap);
+  gap: 48px;
 }
 
 /* ── Top grid — 4 equal columns ────────────────────────────────── */
@@ -45,6 +45,7 @@ body {
   gap: var(--gap);
   width: 100%;
   max-width: 1180px;
+  padding: 16px 0;
 }
 
 /* ── Bottom grid — 3 equal columns ─────────────────────────────── */
@@ -54,6 +55,7 @@ body {
   gap: var(--gap);
   width: 100%;
   max-width: 1180px;
+  padding: 16px 0;
 }
 
 /* ── Image Card (top row) ───────────────────────────────────────── */
