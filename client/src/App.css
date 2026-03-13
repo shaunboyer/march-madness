@@ -287,6 +287,12 @@ body {
   gap: 40px;
 }
 
+.doctrine-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .doctrine-subtitle {
   font-size: clamp(0.7rem, 1.2vw, 0.85rem);
   font-weight: 800;
@@ -294,6 +300,7 @@ body {
   text-transform: uppercase;
   opacity: 0.5;
   margin-bottom: 16px;
+  text-align: center;
 }
 
 .doctrine-list {
@@ -301,21 +308,16 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  align-items: center;
+  text-align: center;
 }
 
 .doctrine-list li {
   font-size: clamp(0.8rem, 1.3vw, 0.95rem);
   line-height: 1.5;
   opacity: 0.85;
-  padding-left: 18px;
+  padding-left: 0;
   position: relative;
-}
-
-.doctrine-list li::before {
-  content: '•';
-  position: absolute;
-  left: 0;
-  opacity: 0.45;
 }
 
 /* ── Responsive ─────────────────────────────────────────────────── */
