@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: march-madness
+    runtime: node
+    buildCommand: npm run install:all && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+    # Persistent disk keeps SQLite data alive across deploys (~$1/mo on Render).
+    # Remove the disk block below if you don't need cross-deploy persistence.
+    disk:
+      name: data
+      mountPath: /var/data
+      sizeGB: 1
