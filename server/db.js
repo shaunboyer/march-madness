@@ -1,11 +1,15 @@
 const Database = require('better-sqlite3');
 const path = require('path');
+const fs   = require('fs');
 
 // On Render with persistent disk, use /var/data; otherwise use local file
 const dbPath =
   process.env.NODE_ENV === 'production'
     ? '/var/data/march-madness.db'
     : path.join(__dirname, 'data.db');
+
+// Ensure the directory exists (important on Render before the disk is mounted)
+fs.mkdirSync(path.dirname(dbPath), { recursive: true });
 
 const db = new Database(dbPath);
 
