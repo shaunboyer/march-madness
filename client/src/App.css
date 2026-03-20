@@ -393,6 +393,23 @@ body {
 .calc-input::-webkit-outer-spin-button,
 .calc-input::-webkit-inner-spin-button { -webkit-appearance: none; }
 
+.calc-time {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.calc-input-sm {
+  width: 62px;
+}
+
+.calc-colon {
+  font-size: 1.3rem;
+  font-weight: 700;
+  opacity: 0.5;
+  line-height: 1;
+}
+
 .calc-input:focus {
   background: rgba(255,255,255,0.12);
   border-color: rgba(255,255,255,0.45);

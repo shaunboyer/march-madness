@@ -19,57 +19,54 @@ function normalCDF(x, mean, std) {
   return 0.5 * (1 + erf((x - mean) / (std * Math.sqrt(2))));
 }
 
-// College basketball: σ of total points ≈ 14 pts pre-game
-// Mid-game remaining variance scales with time left
 const FULL_GAME_SIGMA = 14;
 const TOTAL_MINUTES   = 40;
 
 export default function OUCalculator() {
-  const [score1,    setScore1]    = useState('');
-  const [score2,    setScore2]    = useState('');
-  const [line,      setLine]      = useState('');
-  const [half,      setHalf]      = useState('1');
-  const [minLeft,   setMinLeft]   = useState('');
+  const [score1,  setScore1]  = useState('');
+  const [score2,  setScore2]  = useState('');
+  const [line,    setLine]    = useState('');
+  const [half,    setHalf]    = useState('1');
+  const [minLeft, setMinLeft] = useState('');
+  const [secLeft, setSecLeft] = useState('');
 
   const result = useMemo(() => {
-    const s1  = parseFloat(score1);
-    const s2  = parseFloat(score2);
-    const ln  = parseFloat(line);
-    const ml  = parseFloat(minLeft);
-    const h   = parseInt(half);
+    const s1 = parseFloat(score1);
+    const s2 = parseFloat(score2);
+    const ln = parseFloat(line);
+    const ml = parseFloat(minLeft) || 0;
+    const sl = parseFloat(secLeft) || 0;
+    const h  = parseInt(half);
 
-    if ([s1, s2, ln, ml].some(isNaN)) return null;
+    if ([s1, s2, ln].some(isNaN)) return null;
+    if (minLeft === '' && secLeft === '') return null;
+    if (sl < 0 || sl > 59) return null;
     if (ml < 0 || ml > 20) return null;
 
-    const currentTotal   = s1 + s2;
-    const minutesElapsed = h === 1 ? (20 - ml) : (40 - ml);
+    const totalMinLeft   = ml + sl / 60;
+    const minutesElapsed = h === 1 ? (20 - totalMinLeft) : (40 - totalMinLeft);
     const minutesLeft    = TOTAL_MINUTES - minutesElapsed;
 
     if (minutesElapsed <= 0) return null;
 
-    const pace            = currentTotal / minutesElapsed;       // pts/min so far
-    const expectedRemain  = pace * minutesLeft;
-    const projectedFinal  = currentTotal + expectedRemain;
-    const pointsNeeded    = ln - currentTotal;
-
-    // Remaining uncertainty shrinks as time runs out
-    const sigmaRemaining  = FULL_GAME_SIGMA * Math.sqrt(minutesLeft / TOTAL_MINUTES);
+    const pace           = (s1 + s2) / minutesElapsed;
+    const expectedRemain = pace * minutesLeft;
+    const projectedFinal = (s1 + s2) + expectedRemain;
+    const pointsNeeded   = ln - (s1 + s2);
+    const sigmaRemaining = FULL_GAME_SIGMA * Math.sqrt(minutesLeft / TOTAL_MINUTES);
 
     const probUnder = normalCDF(ln, projectedFinal, sigmaRemaining);
     const probOver  = 1 - probUnder;
 
     return {
-      currentTotal,
+      currentTotal:   s1 + s2,
       projectedFinal: Math.round(projectedFinal * 10) / 10,
       pointsNeeded:   Math.round(pointsNeeded * 10) / 10,
       pace:           Math.round(pace * 10) / 10,
-      minutesLeft:    Math.round(minutesLeft * 10) / 10,
-      probOver:       Math.round(probOver * 1000) / 10,   // 1 decimal %
+      probOver:       Math.round(probOver * 1000) / 10,
       probUnder:      Math.round(probUnder * 1000) / 10,
     };
-  }, [score1, score2, line, half, minLeft]);
-
-  const inputClass = 'calc-input';
+  }, [score1, score2, line, half, minLeft, secLeft]);
 
   return (
     <section className="calc-section">
@@ -79,31 +76,40 @@ export default function OUCalculator() {
       <div className="calc-inputs">
         <label className="calc-field">
           <span>Team 1</span>
-          <input className={inputClass} type="number" min="0" placeholder="0"
+          <input className="calc-input" type="number" min="0" placeholder="0"
             value={score1} onChange={(e) => setScore1(e.target.value)} />
         </label>
         <label className="calc-field">
           <span>Team 2</span>
-          <input className={inputClass} type="number" min="0" placeholder="0"
+          <input className="calc-input" type="number" min="0" placeholder="0"
             value={score2} onChange={(e) => setScore2(e.target.value)} />
         </label>
         <label className="calc-field">
           <span>O/U Line</span>
-          <input className={inputClass} type="number" min="0" placeholder="150"
+          <input className="calc-input" type="number" min="0" placeholder="150"
             value={line} onChange={(e) => setLine(e.target.value)} />
         </label>
         <label className="calc-field">
           <span>Half</span>
-          <select className={inputClass} value={half} onChange={(e) => setHalf(e.target.value)}>
+          <select className="calc-input" value={half} onChange={(e) => setHalf(e.target.value)}>
             <option value="1">1st</option>
             <option value="2">2nd</option>
           </select>
         </label>
-        <label className="calc-field">
-          <span>Min Left</span>
-          <input className={inputClass} type="number" min="0" max="20" placeholder="10"
-            value={minLeft} onChange={(e) => setMinLeft(e.target.value)} />
-        </label>
+
+        {/* Time remaining — min : sec */}
+        <div className="calc-field">
+          <span>Time Left</span>
+          <div className="calc-time">
+            <input className="calc-input calc-input-sm" type="number" min="0" max="20"
+              placeholder="10" value={minLeft}
+              onChange={(e) => setMinLeft(e.target.value)} />
+            <span className="calc-colon">:</span>
+            <input className="calc-input calc-input-sm" type="number" min="0" max="59"
+              placeholder="00" value={secLeft}
+              onChange={(e) => setSecLeft(e.target.value)} />
+          </div>
+        </div>
       </div>
 
       {result && (
