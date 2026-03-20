@@ -2,6 +2,7 @@ import ImageCard from './components/ImageCard';
 import RocketCounter from './components/RocketCounter';
 import CoinFlip from './components/CoinFlip';
 import WhiskeyCounter from './components/WhiskeyCounter';
+import OUCalculator from './components/OUCalculator';
 
 const BELIEFS = [
   'Stay by the river',
@@ -50,6 +51,9 @@ export default function App() {
         <CoinFlip />
         <WhiskeyCounter />
       </div>
+
+      {/* Live O/U Calculator */}
+      <OUCalculator />
 
       {/* The Doctrine */}
       <section className="doctrine">
