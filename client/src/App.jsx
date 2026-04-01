@@ -43,6 +43,7 @@ export default function App() {
         <ImageCard src="/images/2023.png" alt="2023" year="2023" song="Hypnotized by Purple Disco Machine" />
         <ImageCard src="/images/2024.png" alt="2024" year="2024" song="Coffee by Sylvan Esso" />
         <ImageCard src="/images/2025.png" alt="2025" year="2025" song="A Bar Song by Shaboozey" />
+        <ImageCard src="/images/2026.png" alt="2026" year="2026" />
       </div>
 
       {/* Bottom row — interactive panels */}

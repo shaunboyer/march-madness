@@ -38,10 +38,10 @@ body {
   gap: 48px;
 }
 
-/* ── Top grid — 4 equal columns ────────────────────────────────── */
+/* ── Top grid — 5 equal columns ────────────────────────────────── */
 .grid-top {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: var(--gap);
   width: 100%;
   max-width: 1180px;
